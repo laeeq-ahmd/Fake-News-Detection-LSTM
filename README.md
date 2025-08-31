@@ -1,79 +1,158 @@
-# ⚡ Fast Fake News Detection Model
+# ⚡ Fake News Detection Model
 
-This folder contains the optimized, fast version of the fake news detection model that achieves **95% accuracy** in just **1.1 minutes** of training time.
+A lightweight LSTM-based fake news detection system that can classify news articles as real or fake. This project provides both pretrained models and the ability to train your own models from scratch.
 
-## 🚀 Performance Improvements
+## 🎯 Features
 
-| Metric | Original Model | Fast Model | Improvement |
-|--------|----------------|------------|-------------|
-| **Accuracy** | 59.32% | **95.0%** | **+35.68%** |
-| **Training Time** | 8+ min/epoch | **0.2 min/epoch** | **40x faster** |
-| **Total Training** | 40+ minutes | **1.1 minutes** | **36x faster** |
-| **Dataset Size** | 34K samples | 20K samples | More efficient |
+- **Lightweight LSTM Architecture**: Efficient neural network design for fast inference
+- **Text Preprocessing**: Automated text cleaning and tokenization
+- **Flexible Training**: Train your own model or use provided pretrained models
+- **Web Interface**: Streamlit-based web application for easy testing
+- **Balanced Dataset**: Uses WELFake dataset with balanced real/fake samples
 
-## 📁 Files
+## 📁 Project Structure
 
-- `fast_preprocessing.py` - Fast data preprocessing (20K balanced samples)
-- `fast_model_building.py` - Lightweight LSTM model architecture
-- `fast_train.py` - Fast training with optimized parameters
-- `fast_evaluate.py` - Model evaluation and metrics
-- `fast_app.py` - Streamlit web application
-- `fast_lstm_model.h5` - Untrained model architecture
-- `fast_lstm_trained.h5` - Trained model weights
+```
+Source Code/
+├── Models/                    # Model files directory
+│   ├── lstm_model.h5         # Untrained model architecture
+│   ├── lstm_trained.h5       # Pretrained model weights
+│   ├── tokenizer.pkl         # Text tokenizer
+│   ├── X_train_seq.npy       # Training sequences
+│   ├── X_test_seq.npy        # Test sequences
+│   ├── X_train.npy           # Raw training text
+│   ├── X_test.npy            # Raw test text
+│   ├── y_train.npy           # Training labels
+│   └── y_test.npy            # Test labels
+├── app.py                    # Streamlit web application
+├── train.py                  # Model training script
+├── evaluate.py               # Model evaluation script
+├── model_building.py         # Model architecture definition
+├── preprocessing.py           # Data preprocessing script
+├── WELFake_Dataset.csv       # Original dataset
+└── README.md                 # This file
+```
 
-## ⚡ Model Architecture
+## 🚀 Quick Start
 
-- **Vocabulary Size**: 5,000 words (vs 15,000)
-- **Sequence Length**: 200 tokens (vs 500)
-- **Embedding**: 64 dimensions (vs 200)
-- **LSTM**: Single layer (vs bidirectional)
-- **Dense Layers**: 1 hidden layer (vs 2)
+### Option 1: Use Pretrained Models (Recommended for Quick Testing)
 
-## 🎯 Quick Start
+If you want to test the system immediately without training:
 
-1. **Preprocess data**:
+1. **Run the web application**:
    ```bash
-   python fast_preprocessing.py
+   cd "Source Code"
+   streamlit run app.py
    ```
 
-2. **Build model**:
+2. **Open your browser** and navigate to the provided URL
+3. **Enter news text** and get instant predictions
+
+The app will automatically load the pretrained model and tokenizer from the `Models/` directory.
+
+### Option 2: Train Your Own Model
+
+If you want to train a custom model or retrain with different parameters:
+
+1. **Preprocess the data**:
    ```bash
-   python fast_model_building.py
+   cd "Source Code"
+   python preprocessing.py
    ```
 
-3. **Train model**:
+2. **Build the model architecture**:
    ```bash
-   python fast_train.py
+   python model_building.py
    ```
 
-4. **Evaluate model**:
+3. **Train the model**:
    ```bash
-   python fast_evaluate.py
+   python train.py
    ```
 
-5. **Run web app**:
+4. **Evaluate the model**:
    ```bash
-   streamlit run fast_app.py
+   python evaluate.py
    ```
 
-## 📊 Model Performance
+5. **Run the web app** with your trained model:
+   ```bash
+   streamlit run app.py
+   ```
 
-- **Accuracy**: 95.0%
-- **Precision**: 93.6%
-- **Recall**: 96.6%
-- **F1-Score**: 95.1%
-- **Training Time**: 1.1 minutes
-- **Prediction Time**: <0.1 seconds
+## 🔧 Model Architecture
 
-## 🔧 Optimizations Made
+- **Embedding Layer**: 64-dimensional word embeddings
+- **LSTM Layer**: Single LSTM layer with 64 units
+- **Dense Layers**: 32-unit hidden layer with dropout
+- **Output**: Binary classification (Real/Fake)
+- **Vocabulary Size**: 5,000 words
+- **Sequence Length**: 200 tokens
 
-1. **Reduced Dataset**: 20K balanced samples instead of 34K
-2. **Simplified Architecture**: Single LSTM layer instead of bidirectional
-3. **Smaller Vocabulary**: 5K words instead of 15K
-4. **Shorter Sequences**: 200 tokens instead of 500
-5. **Faster Preprocessing**: Simplified text cleaning
-6. **Optimized Training**: Larger batch size, early stopping
+## 📊 Dataset
 
-## 🎉 Results
+- **Source**: WELFake dataset
+- **Size**: 20,000 balanced samples (10,000 per class)
+- **Split**: 80% training, 20% testing
+- **Features**: Combined title and text content
+- **Labels**: 0 (Fake), 1 (Real)
 
-The fast model achieves excellent performance while being dramatically faster to train and deploy. Perfect for real-time fake news detection applications! 
+## 🛠️ Requirements
+
+Install the required packages:
+
+```bash
+pip install tensorflow pandas numpy scikit-learn nltk streamlit matplotlib seaborn
+```
+
+## 📝 Usage Examples
+
+### Web Application
+The Streamlit app provides a user-friendly interface:
+- Paste any news article or text
+- Get instant real/fake classification
+- View confidence scores and processing details
+
+### Programmatic Usage
+```python
+from tensorflow.keras.models import load_model
+import pickle
+import numpy as np
+
+# Load model and tokenizer
+model = load_model("Models/lstm_trained.h5")
+with open("Models/tokenizer.pkl", "rb") as f:
+    tokenizer = pickle.load(f)
+
+# Make predictions
+text = "Your news text here"
+# ... preprocessing and prediction logic
+```
+
+## 🔍 Customization
+
+You can modify various parameters in the scripts:
+- **Vocabulary size**: Change `vocab_size` in `model_building.py`
+- **Sequence length**: Adjust `max_length` for different text lengths
+- **Model architecture**: Modify layers in `model_building.py`
+- **Training parameters**: Adjust epochs, batch size in `train.py`
+
+## 📚 File Descriptions
+
+- **`preprocessing.py`**: Data loading, cleaning, and train-test splitting
+- **`model_building.py`**: Defines LSTM architecture and creates tokenizer
+- **`train.py`**: Trains the model with early stopping
+- **`evaluate.py`**: Evaluates model performance and generates metrics
+- **`app.py`**: Streamlit web interface for real-time predictions
+
+## 🤝 Contributing
+
+Feel free to:
+- Experiment with different model architectures
+- Try different preprocessing techniques
+- Test with other datasets
+- Improve the web interface
+
+## 📄 License
+
+This project is for educational and research purposes. Please ensure you have appropriate permissions for any datasets you use. 
