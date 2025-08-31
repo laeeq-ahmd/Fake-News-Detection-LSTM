@@ -1,3 +1,5 @@
+## 🔗 Live App: https://fnd-lstm.streamlit.app/
+
 # ⚡ Fake News Detection Model
 
 A lightweight LSTM-based fake news detection system that can classify news articles as real or fake. This project provides both pretrained models and the ability to train your own models from scratch.
@@ -154,5 +156,6 @@ Feel free to:
 - Improve the web interface
 
 ## 📄 License
+
 
 This project is for educational and research purposes. Please ensure you have appropriate permissions for any datasets you use. 
